@@ -9,6 +9,11 @@ import pymongo
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logger.logger import logging
 
+load_dotenv()
+MONGO_DB_URL = os.getenv("MONGO_DB_URL")
+ca = certifi.where()
+
+
 class NetworkDataExtract:
     def __init__(self):
         try:
