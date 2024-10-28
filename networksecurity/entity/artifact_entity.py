@@ -2,10 +2,11 @@ from dataclasses import dataclass
 
 @dataclass
 class DataIngestionArtifact:
-    pass
+    trained_file_path: str
+    test_file_path: str
 
 @dataclass
-class DataTansformationArtifact:
+class DataTransformationArtifact:
     pass
 
 @dataclass
@@ -13,7 +14,7 @@ class DataValidationArtifact:
     pass
 
 @dataclass
-class ModelTranierArtifact:
+class ModelTrainerArtifact:
     pass
 
 @dataclass

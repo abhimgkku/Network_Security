@@ -13,6 +13,7 @@ from sklearn.model_selection import train_test_split
 
 load_dotenv()
 MONGO_DB_URL = os.getenv('MONGO_DB_URL')
+print(MONGO_DB_URL)
 
 class DataIngestion:
     def __init__(self,data_ingestion_config: DataIngestionConfig):
@@ -27,8 +28,8 @@ class DataIngestion:
             self.database_name = self.data_ingestion_config.database_name
             self.collection_name = self.data_ingestion_config.collection_name
             self.mongo_client = pymongo.MongoClient(MONGO_DB_URL)
-            self.collection = self.mongo_client[self.database_name][self.collection_name]
-            df = pd.DataFrame(list(self.collection.find()))
+            collection = self.mongo_client[self.database_name][self.collection_name]
+            df = pd.DataFrame(list(collection.find()))
             if "_id" in df.columns.tolist():
                 df = df.drop(columns=["_id"],axis=1)
             df.replace({"na":np.nan},inplace=True)
@@ -54,7 +55,7 @@ class DataIngestion:
             logging.info(f"Exporting training and test file")
             os.makedirs(dir_path,exist_ok=True)
             train_set.to_csv(self.data_ingestion_config.training_file_path,index=False,header=True)
-            test_set.to_csv(self.data_ingestion_config.test_file_path,index=False,header=True)
+            test_set.to_csv(self.data_ingestion_config.testing_file_path,index=False,header=True)
             logging.info(f"train and test file export completed successfully")
         except Exception as e:
             raise NetworkSecurityException(e,sys)
@@ -66,7 +67,7 @@ class DataIngestion:
             self.split_data_as_train_test(dataframe=dataframe)
             data_ingestion_artifact = DataIngestionArtifact(
                 trained_file_path = self.data_ingestion_config.training_file_path,
-                test_file_path = self.data_ingestion_config.test_file_path
+                test_file_path = self.data_ingestion_config.training_file_path
             )
             return data_ingestion_artifact
         except Exception as e:

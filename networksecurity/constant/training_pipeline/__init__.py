@@ -18,8 +18,8 @@ SCHEMA_DROP_COLS: str = "drop_columns"
 SAVED_MODEL_DIR: str = os.path.join("saved_models")
 
 """Data Ingestion related constants start with DATA_INGESTION var name"""
-DATA_INGESTION_COLLECTION_NAME: str = "NetworkDataBase"
-DATA_INGESTION_DATABASE_NAME: str = "NetworkDataCollection"
+DATA_INGESTION_COLLECTION_NAME: str =  "NetworkDataCollection"
+DATA_INGESTION_DATABASE_NAME: str = "NetworkDataBase"
 DATA_INGESTION_DIR_NAME: str = "data_ingestion"
 DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
 DATA_INGESTION_INGESTED_DIR: str = "ingested"
