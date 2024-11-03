@@ -3,7 +3,7 @@ import sys
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logger.logger import logging
 from networksecurity.components.data_ingestion import DataIngestion
-from networksecurity.components.data_trasnformation import DataTransformation
+from networksecurity.components.data_transformation import DataTransformation
 from networksecurity.components.data_validation import DataValidation
 from networksecurity.components.model_trainer import ModelTrainer
 from networksecurity.components.model_evaluation import ModelEvaluation
@@ -43,9 +43,12 @@ class TrainingPipeline:
         except Exception as e:
             raise NetworkSecurityException(e,sys)
         
-    def start_data_transformation(self):
+    def start_data_transformation(self,data_validation_artifact:DataValidationArtifact):
         try:
-            pass
+            data_transformation_config = DataTransformationConfig(self.training_pipeline_config)
+            data_transformation = DataTransformation(data_transformation_config=data_transformation_config,data_validation_artifact=data_validation_artifact)
+            data_transformation_artifact = data_transformation.initiate_data_transformation()
+            return data_transformation_artifact 
         except Exception as e:
             raise NetworkSecurityException(e,sys)
     
@@ -80,9 +83,12 @@ class TrainingPipeline:
     def run_pipeline(self):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
-            print(data_ingestion_artifact)
-
+            print(f"data_ingestion_artifact: {data_ingestion_artifact}")
+            
             data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
-            print(data_validation_artifact)
+            print(f"data_validation_artifact: {data_validation_artifact}")
+
+            data_tansformation_artifact = self.start_data_transformation(data_validation_artifact=data_validation_artifact)
+            print(f"data_transformation_artifact: {data_tansformation_artifact}")
         except Exception as e:
             raise NetworkSecurityException(e,sys)
